@@ -1,6 +1,6 @@
 {
-    "name": "fuzzy_search",
-    "short_name": "fuzzy_search",
+    "name": "Fuzzy DNA Search",
+    "short_name": "Fuzzy DNA Search",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

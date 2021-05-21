@@ -5,6 +5,7 @@ import 'dart:html' as html;
 import 'package:flutter/rendering.dart';
 import 'package:fuzzy_search/style.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:file_picker/file_picker.dart';
 
 
 class FuzzySearchHome extends StatefulWidget {
@@ -14,6 +15,9 @@ class FuzzySearchHome extends StatefulWidget {
 }
 
 class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
+  FilePickerResult dnaSequence;
+  IconData uploadState = Icons.add_circle_rounded;
+  Color uploadColor = Colors.white;
 
   @override
   void initState() {
@@ -48,6 +52,29 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
 
     void _launchURL() async =>
         await canLaunch(_githubUrl) ? await launch(_githubUrl) : throw 'Could not launch $_githubUrl';
+
+    uploadingDNA() async {
+        dnaSequence = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['txt'],
+      );
+
+      if(dnaSequence != null) {
+        PlatformFile file = dnaSequence.files.first;
+        // print(file.name);
+        // print(file.bytes);
+        // print(file.size);
+        // print(file.extension);
+        // print(file.path);
+        setState(() {
+          uploadState = Icons.cloud_done;
+          uploadColor = Colors.green;
+        });
+      } else {
+        // User canceled the picker
+      }
+    }
+
 
 
      showAboutDialog () {
@@ -150,8 +177,10 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
                                  children: [
                                    IconButton(
                                        iconSize: _width*0.03,
-                                       icon: Icon(Icons.add_circle_rounded, color: Colors.white,),
-                                       onPressed: () {}),
+                                       icon: Icon(uploadState, color: uploadColor,),
+                                       onPressed: () {
+                                           uploadingDNA();
+                                       }),
                                    Column(
                                      children: [
                                        Text("Add Your Sequence", style: TextStyle(color: Colors.white, fontSize: _width*0.012, fontWeight: FontWeight.w300, height: 1)),
