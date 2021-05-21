@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
         primaryColor: Style.primraryColor,
         accentColor:  Style.secondryColor,
         unselectedWidgetColor: Colors.white,
-        fontFamily: "Poppins"
+        fontFamily: "Poppins",
+        visualDensity: VisualDensity.adaptivePlatformDensity
       ),
       home: FuzzySearchHome(),
     );
