@@ -1,5 +1,5 @@
-# fuzzy_search
-
+# Fuzzy DNA Search
+ 
 Fuzzy Search DNA using FM-Index
 
 ## Getting Started
