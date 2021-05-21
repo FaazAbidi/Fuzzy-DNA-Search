@@ -16,11 +16,15 @@ class FuzzySearchHome extends StatefulWidget {
 class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
-    double _bgSize = 1.0;
     String _githubUrl = "https://github.com/FaazAbidi/Fuzzy-DNA-Search/blob/main/fuzzy_search/README.md";
 
     Widget menuButton (String text, {VoidCallback onTap}) {
@@ -68,11 +72,10 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
          body: Stack(
            children: [
              Padding(
-               padding: const EdgeInsets.only(left: 450.0),
+               padding: EdgeInsets.only(left: _width*0.2),
                child: Opacity(
                  opacity: 0.35,
-                 child: AnimatedContainer(
-                   duration: Duration(seconds: 2),
+                 child: Container(
                    alignment: Alignment.centerRight,
                    constraints: BoxConstraints.expand(),
                    decoration: BoxDecoration(
