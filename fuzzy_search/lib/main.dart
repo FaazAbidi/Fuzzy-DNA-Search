@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'dart:html' as html;
 
 import 'package:flutter/rendering.dart';
+import 'package:fuzzy_search/results.dart';
 import 'package:fuzzy_search/style.dart';
 
+import 'home.dart';
 import 'home.dart';
 
 void main() {
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: FuzzySearchHome(),
+      home: Scaffold(backgroundColor: Colors.black54,body: FuzzySearchHome(
+      )),
     );
   }
 }
