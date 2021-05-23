@@ -76,8 +76,6 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
       }
     }
 
-
-
      showAboutDialog () {
        return showDialog(context: context, builder: (BuildContext context) {
          return Dialog(

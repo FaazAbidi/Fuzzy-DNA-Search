@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fuzzy_search/index_information.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fuzzy_search/processingDNA.dart';
 
 import 'style.dart';
 
@@ -13,6 +14,7 @@ class Results extends StatefulWidget {
 }
 
 class _ResultsState extends State<Results> {
+
   FilePickerResult dnaSequence;
   TextStyle _textStyle = TextStyle(
     fontSize: 20,
@@ -25,48 +27,8 @@ class _ResultsState extends State<Results> {
   @override
   void initState() {
     super.initState();
-    _dnaText =
-        "GCAGTTTAAGTCGGGACAATAGGAGCCGCAATACACAGTTTACCGCATCTTGACCTAACTGACATACTGCCATGGACGACTAGCCATGCCACTGGCTCTTAGATAGCCCGATACAGTGATTATGAAAGGTTTGCGGGGCATAGCTACGACTTGCTTAGCTACGTGCGAGGGAAGAAACTTTTGCGTATTTGTATGTTCACCCGTCTACTACCCATGCCCGGAGATTATGTAGGTTGTGAGATGCGGGAGAAGTTCTCGACCTTCCCGTGGGACGTCAACCTATCCCTTAATAGAGCATTCCGTTCGGGCATGGCAGTAAGTACGCCTTCTCAATTGTGCTAACCTTCATCCTTATCAAAGCTTGGAGCCAATGATCAGGATTATTGCCTTGCGACAGACTTCCTACTCACAGTCGCTCACATTGAGCTACTCGATGGGTCATCAGCTTGACCCGGTCTGTTGGGCCGCGATTACGTGAGTTAGGGCTCCGGACTGCGCTGTATAGTCGAATCTGATCCGGCCCCCACAACTGCAAACCCCAACTTATTTAGATAACATGATTAGCCGAAGTTGCACGGGGTGCCCACCGTGGAGTCCTCCCCGGGTGTCCCTCCTTCATTTGACGATAAGCAGCCGCTACCACCATCGATTAATACAAGGAACGGTGATGTTATCATAGATTCGGCACATTACCCTTGTAGGTGTGGAATCACTTAGCTACGCGCCGAAGTCTTATGGCAAAACCGATGGACAATGATTCGGGTAGCACTAAAAGTCCATAGCACGTGCATCCCAACGTGGCGTGCGTACAGCTTAACCACCGCTTCATGCTAAGGTGCTGGCTGCATGCTAAGTTGATACGCCTGCACTGCTCGAAGAAAATATACGAAGCGGGCGGCCTGGCCGGAGCACTACCCCATCGACGCGTACTCGAATACTGTTAATTGCTCACACATGAACAAAATAGTAGAGTGTCACTTTCAGCCCTCTTATCCTCGGC";
-    words = {
-      "AA": HighlightedWord(
-        onTap: () {
-        },
-        textStyle: _highlightedTextStyle,
-      ),
-    };
   }
 
-  Widget _getDnaText(List<List<int>> indexes) {
-    List<TextSpan> spans = [];
-    bool highlighted;
-    if (indexes[0][0] == 0) {
-      highlighted = true;
-    } else {
-      highlighted = false;
-    }
-    int currentIndex = 0;
-    for (List<int> index in indexes) {
-      if (!highlighted) {
-        spans.add(TextSpan(
-          text: _dnaText.substring(currentIndex, index[0]),
-        ));
-        currentIndex=index[0];
-        highlighted=true;
-      } else {
-        spans.add(TextSpan(
-          style: _highlightedTextStyle,
-          text: _dnaText.substring(currentIndex, index[1]),
-        ));
-        currentIndex=index[1];
-        highlighted=false;
-      }
-    }
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: RichText(
-          text: TextSpan(style: _textStyle, children: spans)),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +79,7 @@ class _ResultsState extends State<Results> {
                             padding: EdgeInsets.all(25.0),
                             child: Column(
                               children: [
-                              DynamicTextHighlighting(
-                              text: _dnaText,
-                              highlights: ['AA','AGT','ATT'],
-                              color: Colors.redAccent,
-                              style: _textStyle,
-                              caseSensitive: false,
-                            )
+                                ProcessingDNA().getDnaText()
                               ],
                             ),
                           ),
