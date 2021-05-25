@@ -1,11 +1,9 @@
-import 'package:dynamic_text_highlighting/dynamic_text_highlighting.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:fuzzy_search/index_information.dart';
+import 'package:fuzzy_search/demo_dna.dart';
 import 'package:highlight_text/highlight_text.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:fuzzy_search/processingDNA.dart';
-
+import 'data.dart';
 import 'style.dart';
 
 class Results extends StatefulWidget {
@@ -14,18 +12,17 @@ class Results extends StatefulWidget {
 }
 
 class _ResultsState extends State<Results> {
-
+  List<Widget> dnaTextWidgets=[];
+  Data mainData;
   FilePickerResult dnaSequence;
-  TextStyle _textStyle = TextStyle(
-    fontSize: 20,
-    color: Colors.white,
-  );
-  TextStyle _highlightedTextStyle = TextStyle(fontSize: 30, color: Colors.grey);
-  String _dnaText;
   Map<String, HighlightedWord> words;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    mainData = Data(kdnaRaw);
+    mainData.getResults();
+    dnaTextWidgets = mainData.getDnaTextWidgets('97');
     super.initState();
   }
 
@@ -56,7 +53,7 @@ class _ResultsState extends State<Results> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(55.0),
+              padding: EdgeInsets.all(30.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: Style.primraryColor,
@@ -74,16 +71,21 @@ class _ResultsState extends State<Results> {
                   children: [
                     Expanded(
                         flex: 4,
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: EdgeInsets.all(25.0),
-                            child: Column(
-                              children: [
-                                ProcessingDNA().getDnaText()
-                              ],
+                        child: Padding(
+                          padding: EdgeInsets.all(25.0),
+                          child: Scrollbar(
+                            controller: _scrollController,
+                            isAlwaysShown: true,
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              itemCount: dnaTextWidgets.length,
+                              itemBuilder: (context,index){
+                                return dnaTextWidgets[index];
+                              },
                             ),
                           ),
-                        )),
+                          )),
                     Expanded(
                         flex: 2,
                         child: Container(
@@ -95,9 +97,9 @@ class _ResultsState extends State<Results> {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      CodeScoreTile(title:"Perfect Match | score : 100", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
-                                      CodeScoreTile(title:"score : 90", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
-                                      CodeScoreTile(title:"score : 80", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
+                                      // CodeScoreTile(title:"score : 100", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
+                                      // CodeScoreTile(title:"score : 90", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
+                                      // CodeScoreTile(title:"score : 80", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
                                     ],
                                   ),
                                 ),
@@ -119,63 +121,66 @@ class _ResultsState extends State<Results> {
   }
 }
 
-class CodeScoreTile extends StatelessWidget {
-  String title;
-  int count;
-  List<IndexInformation> indexes;
-  CodeScoreTile({
-    Key key,
-    this.title,
-    this.count,
-    this.indexes,
-  }) : super(key: key);
-
-  List<Widget> getIndexInformation(){
-    List<Widget> _indexInfoWidgets = [];
-    for(IndexInformation index in indexes){
-     _indexInfoWidgets.add(
-       Padding(
-         padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-         child: Row(
-           children: [
-             Text(
-               index.instance,
-               style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
-             ),
-             Spacer(),
-             Text(
-               'Indexes : ${index.startIndex} - ${index.endIndex}',
-               style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
-             ),
-           ],
-         ),
-       ),
-     );
-    }
-    return _indexInfoWidgets;
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      color: Style.secondryColor,
-    child: ExpansionTile(
-      title: Text(
-      title,
-      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
-      ),
-    trailing: Text(
-      '(${count})',
-      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
-    ),
-    children:getIndexInformation(),
-    ),
-    );
-  }
-}
-
-
-
-
+// class CodeScoreTile extends StatelessWidget {
+//   String title;
+//   int count;
+//   List<List<int>> indexes;
+//   String dnaSequence;
+//
+//   CodeScoreTile({
+//     Key key,
+//     this.title,
+//     this.count,
+//     this.indexes,
+//     this.dnaSequence,
+//   }) : super(key: key);
+//
+//   List<Widget> getIndexInformation(){
+//     List<Widget> _indexInfoWidgets = [];
+//     for(IndexInformation index in indexes){
+//      _indexInfoWidgets.add(
+//        Padding(
+//          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+//          child: Row(
+//            children: [
+//              Text(
+//                index.instance,
+//                style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
+//              ),
+//              Spacer(),
+//              Text(
+//                'Indexes : ${index.startIndex} - ${index.endIndex}',
+//                style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
+//              ),
+//            ],
+//          ),
+//        ),
+//      );
+//     }
+//     return _indexInfoWidgets;
+//   }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(15.0),
+//       ),
+//       color: Style.secondryColor,
+//     child: ExpansionTile(
+//       title: Text(
+//       title,
+//       style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
+//       ),
+//     trailing: Text(
+//       '(${count})',
+//       style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
+//     ),
+//     children:getIndexInformation(),
+//     ),
+//     );
+//   }
+// }
+//
+//
+//
+//
