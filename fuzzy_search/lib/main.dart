@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: Scaffold(backgroundColor: Colors.black54,body: FuzzySearchHome(
+      home: Scaffold(backgroundColor: Style.bgColor ,body: FuzzySearchHome(
       )),
     );
   }

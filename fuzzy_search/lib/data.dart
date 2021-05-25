@@ -1,9 +1,11 @@
-
+import 'dart:convert';
 import 'dart:html';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:fuzzy_search/demo_dna.dart';
 import 'package:fuzzy_search/style.dart';
-import 'package:span_builder/span_builder.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class Data {
   Map<String, List<List<int>>> result;
@@ -29,10 +31,33 @@ class Data {
     );
   }
 
+  Future<http.Response> sendRequest(String pattern) async {
+    String url = 'https://fm-index.herokuapp.com';
+    Response response;
+    Map<String, dynamic> headers =  {
+    "Access-Control-Allow-Origin": "*"
+    };
+    var dio = Dio();
+    dio.options.baseUrl = url;
+    dio.options.headers["Access-Control-Allow-Origin"] = "*";
+    FormData formData = FormData.fromMap({
+      "file": MultipartFile.fromString(kdnaRaw, filename:"demo_dna"),
+      "substring" : pattern
+    });
+    response = await dio.post(
+        "/search",
+      data: formData,
+      options: Options(headers: {"Access-Control-Allow-Origin" : "*"})
+    );
+    print(response.statusCode);
+    print(response.data['100']);
+  }
+
   Data(String d){
     dnaSequence=d;
   }
   void getResults(){
+
     result = {
       '77': [
         [0, 28],

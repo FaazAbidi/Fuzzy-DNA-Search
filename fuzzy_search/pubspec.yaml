@@ -30,9 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   url_launcher: ^6.0.4
   file_picker: ^3.0.1
-  highlight_text: ^1.0.0
-  dynamic_text_highlighting: ^2.2.0
-  span_builder: ^0.1.0
+  http: ^0.13.3
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:

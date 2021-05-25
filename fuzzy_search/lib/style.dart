@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
 class Style {
+  static const Color bgColor = Color(0xff1e1e1e);
   static const Color secondryColor = Color(0xffAC1313);
   static const Color primraryColor = Color(0xff141414);
   static const Color headingColor = Colors.white;

@@ -1,8 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
 import 'dart:html' as html;
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fuzzy_search/data.dart';
+import 'package:fuzzy_search/demo_dna.dart';
 import 'package:fuzzy_search/results.dart';
 import 'package:fuzzy_search/style.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -136,7 +139,7 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
                            padding:  EdgeInsets.only(right: _width*0.065),
                            child: Row(
                              children: [
-                               menuButton("About", onTap: () { showAboutDialog(); }),
+                               menuButton("About", onTap: () { Data(kdnaRaw).sendRequest("acgtcga"); }),
                                SizedBox(width: _width*0.03,),
                                menuButton("GitHub", onTap:  () { _launchURL(); })
                              ],
@@ -157,12 +160,13 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
                            width: _width*0.25,
                            decoration: BoxDecoration(
                              color: Style.primraryColor,
-                             borderRadius: BorderRadius.all(Radius.circular(15)),boxShadow: [
+                             borderRadius: BorderRadius.all(Radius.circular(15)),
+                             boxShadow: [
                              BoxShadow(
-                               color: Colors.black54,
+                               color: Color(0xFF000000),
                                spreadRadius: 1,
-                               blurRadius: 5,
-                               offset: Offset(0, 3), // changes position of shadow
+                               blurRadius: 2,
+                               offset: Offset(0, 2), // changes position of shadow
                              ),
                            ],
 
@@ -250,7 +254,7 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
                      children: [
                        Padding(
                          padding: EdgeInsets.only(left: _width*0.06, bottom: _height*0.035),
-                         child: Text("Designed w/ love at HU", style: TextStyle(color: Colors.white, fontSize: _width*0.01, fontWeight: FontWeight.w300,)),
+                         child: Text("Made With A Lot Of Coffee By Team Deterministic Trees", style: TextStyle(color: Colors.white, fontSize: _width*0.01, fontWeight: FontWeight.w300,)),
                        ),
                      ],
                    )

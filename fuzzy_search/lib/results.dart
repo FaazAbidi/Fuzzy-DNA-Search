@@ -1,8 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fuzzy_search/demo_dna.dart';
-import 'package:highlight_text/highlight_text.dart';
-import 'package:fuzzy_search/processingDNA.dart';
 import 'data.dart';
 import 'style.dart';
 
@@ -15,7 +13,6 @@ class _ResultsState extends State<Results> {
   List<Widget> dnaTextWidgets=[];
   Data mainData;
   FilePickerResult dnaSequence;
-  Map<String, HighlightedWord> words;
   final ScrollController _scrollController = ScrollController();
 
   @override
