@@ -5,6 +5,9 @@ import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fuzzy_search/demo_dna.dart';
+import 'package:fuzzy_search/index_information.dart';
+import 'package:fuzzy_search/result_graph_data.dart';
+import 'package:fuzzy_search/score_tiles.dart';
 import 'package:fuzzy_search/style.dart' as localStyle;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart' as media;
@@ -22,6 +25,12 @@ class Data {
   String dnaSequence;
   String pattern;
   int marker = -1;
+  List<ResultGraphData> graphData=[];
+  List<CodeScoreTile> codeScoreTiles = [];
+  ResultRuntimeTile resultRuntimeTile;
+  String currentScore;
+
+
   TextStyle _textStyle = TextStyle(
     fontSize: 14,
     color: Colors.white,
@@ -43,6 +52,12 @@ class Data {
       );
 
 
+  void changeScore(String newScore){
+    currentScore=newScore;
+  }
+
+
+
   Widget highlightedContainer (String pattern) {
     return InkWell(
       onTap: () {},
@@ -54,6 +69,7 @@ class Data {
       )
     );
   }
+
 
   Future<http.Response> sendRequestForPreLoaded(int marker) async {
     String url = 'http://127.0.0.1:5000';
@@ -117,19 +133,49 @@ class Data {
     marker = m;
   }
 
+  List<IndexInformation> _getIndexInformation(List<List<int>> indexes){
+    List<IndexInformation> indexInformation = [];
+    for(List<int> i in indexes){
+      indexInformation.add(IndexInformation(instance: dnaSequence.substring(i[0],i[1]),startIndex: i[0],endIndex: i[1]));
+    }
+    return indexInformation;
+  }
+
+
   getResults() async {
-        if (marker == -1) {
-          await sendRequestWithCustom();
-        } else {
-          await sendRequestForPreLoaded(marker);
-        }
+    if (marker == -1) {
+      await sendRequestWithCustom();
+    } else {
+      await sendRequestForPreLoaded(marker);
+    }
+    currentScore=pattern.length.toString();
+    Map<String,List<List<int>>> scores={};
+    result.forEach((key,value){
+      if(key!='-1'){
+        scores[key]=value;
+      }else{
+        resultRuntimeTile = ResultRuntimeTile(characterCount: dnaSequence.length,fileSize: '${(dnaSequence.length/1000).toStringAsFixed(3)} KB',queryTime: '${(value*1000).toStringAsFixed(3)} ms');
+      }
+    });
+
+    scores.forEach(
+     (key,value){
+      graphData.add(ResultGraphData(int.parse(key),value.length));
+      codeScoreTiles.add(
+        CodeScoreTile(
+          score: key,
+          title:'score : $key',
+          count: value.length,
+          indexes: _getIndexInformation(value),
+        )
+      );
+     });
 
   }
 
-  List<Widget> getDnaTextWidgets(int score) {
-    List<dynamic> indexes = result[score.toString()];
+  List<Widget> getDnaTextWidgets() {
+    List<dynamic> indexes = result[currentScore];
     List<Widget> dnaTextWidgets = [];
-
     for (int i = 0; i < indexes.length; i++) {
       if (i == 0) {
         dnaTextWidgets.add(Text(dnaSequence.substring(0, indexes[i][0]).toUpperCase(),style: _textStyle,));

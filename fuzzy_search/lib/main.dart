@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Style.primraryColor,
         accentColor:  Style.secondryColor,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         unselectedWidgetColor: Colors.white,
         fontFamily: "Poppins",
         visualDensity: VisualDensity.adaptivePlatformDensity
