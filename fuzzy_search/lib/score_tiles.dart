@@ -20,7 +20,7 @@ class CodeScoreTile extends StatelessWidget {
     this.score,
   }) : super(key: key);
 
-
+  TextStyle insideExpand = TextStyle(fontSize: 12.0, fontWeight: FontWeight.w300,color: Colors.white);
   List<Widget> getIndexInformation(){
     List<Widget> _indexInfoWidgets = [];
     for(IndexInformation index in indexes){
@@ -33,6 +33,8 @@ class CodeScoreTile extends StatelessWidget {
     }
     return _indexInfoWidgets;
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -59,6 +61,7 @@ class CodeScoreTile extends StatelessWidget {
 
 
 class SubTile extends StatelessWidget {
+  TextStyle insideExpand = TextStyle(fontSize: 12.0, fontWeight: FontWeight.w300,color: Colors.white);
   String qtyName;
   String qty;
   SubTile({this.qty,this.qtyName});
@@ -73,12 +76,12 @@ class SubTile extends StatelessWidget {
         children: [
           Text(
             qtyName,
-            style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
+            style: insideExpand,
           ),
           Spacer(),
           Text(
             qty,
-            style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
+            style: insideExpand,
           ),
         ],
       ),

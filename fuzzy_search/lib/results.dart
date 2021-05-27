@@ -98,15 +98,14 @@ class _ResultsState extends State<Results> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Results',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                  textAlign: TextAlign.start,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Results',style: TextStyle(fontSize: 20,color:Colors.white),textAlign: TextAlign.start,),
+                                    Text('current view: ${mainData.currentScore}',style: TextStyle(fontSize: 14,color:Colors.white, fontWeight: FontWeight.w300),textAlign: TextAlign.start,),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
+                                SizedBox(height: 5,),
                                 Expanded(
                                   child: SingleChildScrollView(
                                     child: Column(

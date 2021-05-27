@@ -35,6 +35,7 @@ dependencies:
   http_parser: ^4.0.0
   scrollable_positioned_list: ^0.1.10
   syncfusion_flutter_charts: ^19.1.65
+  fluttertoast: ^8.0.7
 dev_dependencies:
   flutter_test:
     sdk: flutter
