@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fuzzy_search/data.dart';
 import 'package:fuzzy_search/demo_dna.dart';
+import 'package:fuzzy_search/dnaSequence2.dart';
 import 'package:fuzzy_search/results.dart';
 import 'package:fuzzy_search/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:file_picker/file_picker.dart';
+
+import 'dnaSequence1.dart';
 
 
 class FuzzySearchHome extends StatefulWidget {
@@ -22,10 +25,18 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
   FilePickerResult dnaSequence;
   IconData uploadState = Icons.add_circle_rounded;
   Color uploadColor = Colors.white;
+  Data _data;
 
   @override
   void initState() {
     super.initState();
+  }
+
+
+  void getData() async {
+    _data = Data.fromCustom(coronavirus2Isolate, "GATCTC");
+    _data.changeMarker(2);
+    await _data.getResults();
   }
 
   @override
@@ -54,6 +65,8 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
     }
 
 
+
+
     void _launchURL() async =>
         await canLaunch(_githubUrl) ? await launch(_githubUrl) : throw 'Could not launch $_githubUrl';
 
@@ -65,11 +78,6 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
 
       if(dnaSequence != null) {
         PlatformFile file = dnaSequence.files.first;
-        // print(file.name);
-        // print(file.bytes);
-        // print(file.size);
-        // print(file.extension);
-        // print(file.path);
         setState(() {
           uploadState = Icons.cloud_done;
           uploadColor = Colors.green;
@@ -139,13 +147,12 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
                            padding:  EdgeInsets.only(right: _width*0.065),
                            child: Row(
                              children: [
-                               menuButton("About", onTap: () { Data(kdnaRaw).sendRequest("acgtcga"); }),
+                               menuButton("About", onTap: () { }),
                                SizedBox(width: _width*0.03,),
                                menuButton("GitHub", onTap:  () { _launchURL(); })
                              ],
                            ),
                          )
-
                        ],
                      ),
                    ),
@@ -216,9 +223,9 @@ class _FuzzySearchHomeState extends State<FuzzySearchHome>  {
                                  ),
                                  SizedBox(height: _height*0.03,),
                                  InkWell(
-                                   onTap: () {
-                                     Navigator.push(context, MaterialPageRoute(builder: (context) => Results()));
-
+                                   onTap: () async {
+                                     await getData();
+                                     Navigator.push(context, MaterialPageRoute(builder: (context) => Results(_data)));
                                    },
                                    child: Container(
                                      width: _width*0.21,

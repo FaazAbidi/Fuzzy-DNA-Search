@@ -5,9 +5,14 @@ import 'data.dart';
 import 'style.dart';
 
 class Results extends StatefulWidget {
+  Data data;
+
+  Results(this.data);
+
   @override
-  _ResultsState createState() => _ResultsState();
+  _ResultsState createState() => _ResultsState(data);
 }
+
 
 class _ResultsState extends State<Results> {
   List<Widget> dnaTextWidgets=[];
@@ -15,13 +20,8 @@ class _ResultsState extends State<Results> {
   FilePickerResult dnaSequence;
   final ScrollController _scrollController = ScrollController();
 
-  @override
-  void initState() {
-    mainData = Data(kdnaRaw);
-    mainData.getResults();
-    dnaTextWidgets = mainData.getDnaTextWidgets('97');
-    super.initState();
-  }
+  _ResultsState(this.mainData);
+
 
 
   @override
