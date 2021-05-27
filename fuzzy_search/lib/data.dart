@@ -19,6 +19,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class Data {
   var result;
@@ -29,6 +30,8 @@ class Data {
   List<CodeScoreTile> codeScoreTiles = [];
   ResultRuntimeTile resultRuntimeTile;
   String currentScore;
+  int dnaTextWidgetLength;
+  static ItemScrollController itemScrollController = ItemScrollController();
 
 
   TextStyle _textStyle = TextStyle(
@@ -133,10 +136,11 @@ class Data {
     marker = m;
   }
 
-  List<IndexInformation> _getIndexInformation(List<List<int>> indexes){
-    List<IndexInformation> indexInformation = [];
-    for(List<int> i in indexes){
-      indexInformation.add(IndexInformation(instance: dnaSequence.substring(i[0],i[1]),startIndex: i[0],endIndex: i[1]));
+  List<IndexInformation> _getIndexInformation(var indexes){
+    var indexInformation = [];
+    for(int j=0;j<indexes.length;j++){
+      var i = indexes[j];
+      indexInformation.add(IndexInformation(instance: dnaSequence.substring(i[0],i[1]),startIndex: i[0],endIndex: i[1],oIndex:j));
     }
     return indexInformation;
   }
@@ -149,7 +153,7 @@ class Data {
       await sendRequestForPreLoaded(marker);
     }
     currentScore=pattern.length.toString();
-    Map<String,List<List<int>>> scores={};
+    var scores={};
     result.forEach((key,value){
       if(key!='-1'){
         scores[key]=value;
@@ -193,7 +197,8 @@ class Data {
       }
 
     }
-    print(dnaTextWidgets.length);
+    print(indexes);
+    dnaTextWidgetLength=dnaTextWidgets.length;
     return dnaTextWidgets;
   }
 }

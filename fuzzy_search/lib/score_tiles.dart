@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fuzzy_search/index_information.dart';
 import 'package:fuzzy_search/style.dart';
 
+import 'data.dart';
+
 class CodeScoreTile extends StatelessWidget {
   String title;
   String score;
@@ -18,11 +20,15 @@ class CodeScoreTile extends StatelessWidget {
     this.score,
   }) : super(key: key);
 
+
   List<Widget> getIndexInformation(){
     List<Widget> _indexInfoWidgets = [];
     for(IndexInformation index in indexes){
       _indexInfoWidgets.add(
-          SubTile(qtyName:index.instance,qty:'Index : ${index.startIndex} - ${index.endIndex}')
+          GestureDetector(onLongPress: (){
+            print('long press detect');
+            Data.itemScrollController.scrollTo(index: 2*index.oIndex+1, duration: Duration(seconds: 1));
+          },child: SubTile(qtyName:index.instance,qty:'Index : ${index.startIndex} - ${index.endIndex}',))
       );
     }
     return _indexInfoWidgets;
@@ -56,6 +62,9 @@ class SubTile extends StatelessWidget {
   String qtyName;
   String qty;
   SubTile({this.qty,this.qtyName});
+
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
