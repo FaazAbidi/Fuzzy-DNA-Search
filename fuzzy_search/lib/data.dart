@@ -133,9 +133,9 @@ class Data {
     marker = m;
   }
 
-  List<IndexInformation> _getIndexInformation(List<List<int>> indexes){
+  List<IndexInformation> _getIndexInformation(var indexes){
     List<IndexInformation> indexInformation = [];
-    for(List<int> i in indexes){
+    for(var i in indexes){
       indexInformation.add(IndexInformation(instance: dnaSequence.substring(i[0],i[1]),startIndex: i[0],endIndex: i[1]));
     }
     return indexInformation;
@@ -149,7 +149,7 @@ class Data {
       await sendRequestForPreLoaded(marker);
     }
     currentScore=pattern.length.toString();
-    Map<String,List<List<int>>> scores={};
+    var scores={};
     result.forEach((key,value){
       if(key!='-1'){
         scores[key]=value;
