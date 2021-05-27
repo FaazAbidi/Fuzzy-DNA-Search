@@ -2,6 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fuzzy_search/demo_dna.dart';
 import 'data.dart';
+import 'graph.dart';
+import 'index_information.dart';
 import 'style.dart';
 
 class Results extends StatefulWidget {
@@ -22,7 +24,11 @@ class _ResultsState extends State<Results> {
 
   _ResultsState(this.mainData);
 
-
+  @override
+  void initState() {
+    dnaTextWidgets = mainData.getDnaTextWidgets(mainData.pattern.length);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,15 +100,16 @@ class _ResultsState extends State<Results> {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
-                                      // CodeScoreTile(title:"score : 100", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
-                                      // CodeScoreTile(title:"score : 90", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
-                                      // CodeScoreTile(title:"score : 80", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
+                                      ResultRuntimeTile(characterCount: 8000000,fileSize: '400 MB',queryTime: '0.8s',),
+                                      CodeScoreTile(title:"score : 100", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
+                                      CodeScoreTile(title:"score : 90", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
+                                      CodeScoreTile(title:"score : 80", count: 23, indexes : [IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AGT',startIndex: 10,endIndex: 13),IndexInformation(instance: 'AHT',startIndex: 18,endIndex: 21),IndexInformation(instance: 'AHT',startIndex: 20,endIndex: 23),IndexInformation(instance: 'AHT',startIndex: 40,endIndex: 43),IndexInformation(instance: 'AHT',startIndex: 43,endIndex: 46)]),
                                     ],
                                   ),
                                 ),
                               ),
                               Expanded(
-                                child: Container(color: Colors.green),
+                                child: Container(child:Graph()),
                               )
                             ],
                           ),
@@ -118,66 +125,111 @@ class _ResultsState extends State<Results> {
   }
 }
 
-// class CodeScoreTile extends StatelessWidget {
-//   String title;
-//   int count;
-//   List<List<int>> indexes;
-//   String dnaSequence;
-//
-//   CodeScoreTile({
-//     Key key,
-//     this.title,
-//     this.count,
-//     this.indexes,
-//     this.dnaSequence,
-//   }) : super(key: key);
-//
-//   List<Widget> getIndexInformation(){
-//     List<Widget> _indexInfoWidgets = [];
-//     for(IndexInformation index in indexes){
-//      _indexInfoWidgets.add(
-//        Padding(
-//          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-//          child: Row(
-//            children: [
-//              Text(
-//                index.instance,
-//                style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
-//              ),
-//              Spacer(),
-//              Text(
-//                'Indexes : ${index.startIndex} - ${index.endIndex}',
-//                style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
-//              ),
-//            ],
-//          ),
-//        ),
-//      );
-//     }
-//     return _indexInfoWidgets;
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(15.0),
-//       ),
-//       color: Style.secondryColor,
-//     child: ExpansionTile(
-//       title: Text(
-//       title,
-//       style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
-//       ),
-//     trailing: Text(
-//       '(${count})',
-//       style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
-//     ),
-//     children:getIndexInformation(),
-//     ),
-//     );
-//   }
-// }
-//
-//
-//
-//
+class ResultRuntimeTile extends StatelessWidget {
+  int characterCount;
+  String fileSize;
+  String queryTime;
+
+  ResultRuntimeTile({
+    Key key,
+    this.characterCount,
+    this.fileSize,
+    this.queryTime,
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      color: Style.secondryColor,
+      child: ExpansionTile(
+        title: Text(
+          'Runtime Analysis',
+          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
+        ),
+        children:[
+          SubTile(qtyName: 'Character Count',qty: characterCount.toString(),),
+          SubTile(qtyName: 'File Size',qty: fileSize,),
+          SubTile(qtyName: 'Query Time',qty: queryTime,)
+        ],
+      ),
+    );
+  }
+}
+
+
+class CodeScoreTile extends StatelessWidget {
+  String title;
+  int count;
+  List<IndexInformation> indexes;
+  String dnaSequence;
+
+  CodeScoreTile({
+    Key key,
+    this.title,
+    this.count,
+    this.indexes,
+    this.dnaSequence,
+  }) : super(key: key);
+
+  List<Widget> getIndexInformation(){
+    List<Widget> _indexInfoWidgets = [];
+    for(IndexInformation index in indexes){
+     _indexInfoWidgets.add(
+       SubTile(qtyName:index.instance,qty:'Indexes : ${index.startIndex} - ${index.endIndex}')
+     );
+    }
+    return _indexInfoWidgets;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      color: Style.secondryColor,
+    child: ExpansionTile(
+      title: Text(
+      title,
+      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
+      ),
+    trailing: Text(
+      '(${count})',
+      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500,color: Colors.white),
+    ),
+    children:getIndexInformation(),
+    ),
+    );
+  }
+}
+
+
+
+class SubTile extends StatelessWidget {
+  String qtyName;
+  String qty;
+  SubTile({this.qty,this.qtyName});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+      child: Row(
+        children: [
+          Text(
+            qtyName,
+            style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
+          ),
+          Spacer(),
+          Text(
+            qty,
+            style: TextStyle(fontSize: 13.0,color: Colors.white,fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
