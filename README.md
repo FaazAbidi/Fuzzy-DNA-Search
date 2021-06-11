@@ -4,6 +4,4 @@ Ultra efficient tool for DNA patterns and traits searching using FM-Index. FM-In
 Soon we will be hosting it. URL for that will be provided here.
 
 #### A few mockups from local server
-
-
-
+![Homepage](https://github.com/FaazAbidi/Fuzzy-DNA-Search/blob/main/mockups/homepage.jpg)
