@@ -3,7 +3,7 @@ Ultra efficient tool for DNA patterns and traits searching using FM-Index. FM-In
 
 The web application is completely built on Flutter using Python Flask API as the backend.
 
-The web hosted is on Netlify. You can visit it [here](https://fuzzydna.netlify.app/).
+The web app is hosted on Netlify. You can visit it [here](https://fuzzydna.netlify.app/).
 
 #### A few mockups from local server
 ![Homepage](https://github.com/FaazAbidi/Fuzzy-DNA-Search/blob/main/mockups/homepage.jpg)
